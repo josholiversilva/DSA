@@ -131,6 +131,28 @@ def longestPalindromicSubstring():
 
     # Start from the Middle
     # O(N^2) Time, O(1) Space
+    def expandMiddle(self, s, left, right):
+        if not s or left > right:
+            return 0
+        while left >= 0 and right<len(s) and s[left] == s[right]:
+            left -= 1
+            right += 1
+        
+        # racecar -> returns 7
+        return right - left - 1 
+        
+    def longestPalindrome(self, s: str) -> str:
+        # expand from center everytime as we traverse through
+        left, right = 0, 0
+        for x in range(len(s)):
+            odd = self.expandMiddle(s, x, x)
+            even = self.expandMiddle(s, x, x+1)
+            largest = max(odd, even)
+            if largest > right-left+1:
+                left = x - (largest-1)//2
+                right = x + (largest)//2
+        
+        return s[left:right+1]
 
 
 # Given a list of strings (boxList), sort each element with the following procedures
